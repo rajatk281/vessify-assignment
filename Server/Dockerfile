@@ -14,7 +14,8 @@ FROM base AS prerelease
 COPY --from=install /tmp/dev/node_modules node_modules
 COPY . .
 
-RUN bunx prisma generate
+# Provide a dummy DATABASE_URL since prisma config needs it but the actual URL isn't available during build.
+RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" bunx prisma generate
 
 FROM base AS release
 COPY --from=install /tmp/prod/node_modules node_modules
