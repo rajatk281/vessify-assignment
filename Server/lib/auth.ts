@@ -88,4 +88,8 @@ export const auth = betterAuth({
       },
     },
   },
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> a0db85f41223f7324d281fe0b3c281341391867a
