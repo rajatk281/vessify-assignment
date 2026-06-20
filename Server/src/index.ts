@@ -10,7 +10,7 @@ const app = new Hono();
 app.use(
   "/*",
   cors({
-    origin: ["http://localhost:3001", "http://localhost:5173", "https://vessify-assignment-topaz.vercel.app"],
+    origin: ["http://localhost:3001", "http://localhost:5173", "https://vessify-assignment-topaz.vercel.app", "https://vessify-assignment-ev1s.onrender.com"],
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
