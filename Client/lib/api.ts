@@ -18,6 +18,10 @@ export interface Transaction {
   confidence: number;
   rawText: string;
   userId: string;
+  user?: {
+    name: string | null;
+    email: string;
+  };
   organizationId: string;
   createdAt: string;
   updatedAt: string;

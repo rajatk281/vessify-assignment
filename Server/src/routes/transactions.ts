@@ -95,9 +95,19 @@ app.get("/", zValidator("query", listQuerySchema), async (c) => {
   }
 
   // Fetch one extra record to determine if there's a next page
+  const isAdmin = (user as any).role === "admin";
   const transactions = await prisma.transaction.findMany({
     where: {
       organizationId,
+      ...(isAdmin ? {} : { userId: user.id }),
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
     },
     orderBy: { createdAt: "desc" },
     take: limit + 1,

@@ -20,7 +20,7 @@ describe("Extractor: Sample 1 (Standard multi-line)", () => {
   const result = extractTransaction(SAMPLE_1);
 
   test("extracts correct date", () => {
-    const d = new Date(result.date);
+    const d = result.date;
     expect(d.getFullYear()).toBe(2025);
     expect(d.getMonth()).toBe(11); // December = 11
     expect(d.getDate()).toBe(11);
@@ -45,7 +45,7 @@ describe("Extractor: Sample 2 (Slash date + ₹ symbol)", () => {
   const result = extractTransaction(SAMPLE_2);
 
   test("extracts correct date (DD/MM/YYYY)", () => {
-    const d = new Date(result.date);
+    const d = result.date;
     expect(d.getFullYear()).toBe(2025);
     expect(d.getMonth()).toBe(10); // November = 10
     expect(d.getDate()).toBe(12);
@@ -66,7 +66,7 @@ describe("Extractor: Sample 3 (Messy single-line)", () => {
   const result = extractTransaction(SAMPLE_3);
 
   test("extracts ISO date", () => {
-    const d = new Date(result.date);
+    const d = result.date;
     expect(d.getFullYear()).toBe(2025);
     expect(d.getMonth()).toBe(11); // December
     expect(d.getDate()).toBe(10);

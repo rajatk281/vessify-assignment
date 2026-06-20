@@ -5,34 +5,40 @@ import type { NextRequest } from "next/server";
 const publicRoutes = ["/login", "/register"];
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  try {
+    const { pathname } = request.nextUrl;
 
-  // Allow public routes
-  if (publicRoutes.some((route) => pathname.startsWith(route))) {
+    // Allow public routes
+    if (publicRoutes.some((route) => pathname.startsWith(route))) {
+      return NextResponse.next();
+    }
+
+    // Allow static assets and Next.js internals
+    if (
+      pathname.startsWith("/_next") ||
+      pathname.startsWith("/api") ||
+      pathname.includes(".")
+    ) {
+      return NextResponse.next();
+    }
+
+    // Check for Better Auth session cookie
+    const sessionCookie =
+      request.cookies.get("better-auth.session_token") ||
+      request.cookies.get("__Secure-better-auth.session_token");
+
+    if (!sessionCookie) {
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = "/login";
+      return NextResponse.redirect(loginUrl);
+    }
+
+    return NextResponse.next();
+  } catch (error) {
+    console.error("Middleware Error:", error);
+    // On error, let the request through so we don't bring down the whole app with a 500
     return NextResponse.next();
   }
-
-  // Allow static assets and Next.js internals
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    pathname.includes(".")
-  ) {
-    return NextResponse.next();
-  }
-
-  // Check for Better Auth session cookie
-  // Better Auth uses a cookie named "better-auth.session_token"
-  const sessionCookie =
-    request.cookies.get("better-auth.session_token") ||
-    request.cookies.get("__Secure-better-auth.session_token");
-
-  if (!sessionCookie) {
-    const loginUrl = new URL("/login", request.url);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  return NextResponse.next();
 }
 
 export const config = {

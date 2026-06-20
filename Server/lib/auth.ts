@@ -2,8 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { jwt } from "better-auth/plugins";
-import { organization } from "better-auth/plugins";
+import { jwt, organization, admin } from "better-auth/plugins";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -35,7 +34,7 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
-  plugins: [jwt(), organization()],
+  plugins: [jwt(), organization(), admin()],
   databaseHooks: {
     user: {
       create: {

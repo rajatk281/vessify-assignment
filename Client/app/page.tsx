@@ -183,10 +183,17 @@ export default function DashboardPage() {
 
           <div className="flex items-center gap-4">
             <div className="hidden sm:block text-right">
-              <p className="text-sm font-medium leading-none">
-                {session.user.name || "User"}
-              </p>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <div className="flex items-center justify-end gap-2 mb-1">
+                <p className="text-sm font-medium leading-none">
+                  {session.user.name || "User"}
+                </p>
+                {(session.user as any).role === "admin" && (
+                  <Badge variant="default" className="h-4 px-1 text-[9px] uppercase tracking-wider bg-violet-500/20 text-violet-300 hover:bg-violet-500/30 border-0">
+                    Admin
+                  </Badge>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">
                 {session.user.email}
               </p>
             </div>
@@ -359,6 +366,11 @@ export default function DashboardPage() {
                         <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                           Date
                         </TableHead>
+                        {(session.user as any).role === "admin" && (
+                          <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            Owner
+                          </TableHead>
+                        )}
                         <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                           Description
                         </TableHead>
@@ -379,6 +391,13 @@ export default function DashboardPage() {
                           <TableCell className="text-sm whitespace-nowrap">
                             {formatDate(tx.date)}
                           </TableCell>
+                          {(session.user as any).role === "admin" && (
+                            <TableCell className="text-sm max-w-[150px] truncate">
+                              <span className="text-xs text-muted-foreground">
+                                {tx.user?.name || tx.user?.email || "Unknown"}
+                              </span>
+                            </TableCell>
+                          )}
                           <TableCell className="text-sm max-w-[300px] truncate">
                             {tx.description}
                           </TableCell>

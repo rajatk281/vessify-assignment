@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+Client/node_modules/
+Server/node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Next.js build outputs and caches
+Client/.next/
+Client/out/
+Client/build/
+Client/tsconfig.tsbuildinfo
+*.tsbuildinfo
+next-env.d.ts
+
+# Server build outputs
+Server/dist/
+Server/build/
+Server/lib/
+Server/out/
+
+# Env / Secrets (Ignore all env files except examples)
+.env
+.env.*
+!.env.example
+Client/.env
+Client/.env.*
+!Client/.env.example
+Server/.env
+Server/.env.*
+!Server/.env.example
+
+# Logs and Debugging
+*.log
+logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Testing
+coverage/
+*.lcov
+.nyc_output/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+db.sqlite
+db.sqlite-journal
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
