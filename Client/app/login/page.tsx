@@ -28,20 +28,23 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const result = await signIn.email({
-        email,
-        password,
-      });
-
-      if (result.error) {
-        toast.error(result.error.message || "Invalid email or password");
-        setIsLoading(false);
-        return;
-      }
-
-      toast.success("Welcome back!");
-      router.push("/");
-      router.refresh();
+      await signIn.email(
+        {
+          email,
+          password,
+        },
+        {
+          onSuccess: () => {
+            toast.success("Welcome back!");
+            router.push("/");
+            router.refresh();
+          },
+          onError: (ctx) => {
+            toast.error(ctx.error.message || "Invalid email or password");
+            setIsLoading(false);
+          },
+        }
+      );
     } catch {
       toast.error("Something went wrong. Please try again.");
       setIsLoading(false);
