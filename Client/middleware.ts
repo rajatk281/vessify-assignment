@@ -16,16 +16,19 @@ export function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    const hasSession = request.cookies.has("better-auth.session_token") || request.cookies.has("__Secure-better-auth.session_token");
+    const sessionCookie = request.cookies.get("better-auth.session_token")?.value || 
+                          request.cookies.get("__Secure-better-auth.session_token")?.value;
 
-    if (!hasSession) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    if (!sessionCookie) {
+      // Use nextUrl.clone() which is the safest way to redirect in Next.js middleware
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = "/login";
+      return NextResponse.redirect(loginUrl);
     }
 
     return NextResponse.next();
   } catch (error) {
     console.error("Middleware error:", error);
-    // On error, let the request pass through so it doesn't completely block the user with a 500 error
     return NextResponse.next();
   }
 }
