@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL! || "http://localhost:3001",
+  // Same-origin requests — Next.js rewrites proxy them to the backend
+  // This ensures session cookies (stored on vercel.app) are sent automatically
+  baseURL: "",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
