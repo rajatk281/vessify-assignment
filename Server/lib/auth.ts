@@ -1,11 +1,9 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "../src/generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
 import { jwt, organization, admin } from "better-auth/plugins";
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 /**
  * Generate a URL-safe slug from a name.
@@ -24,9 +22,20 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  baseURL: process.env.BETTER_AUTH_URL,
   trustedOrigins: ["http://localhost:3001", "http://localhost:5173", "https://vessify-assignment-topaz.vercel.app", "https://vessify-assignment-ev1s.onrender.com", "https://vessify-assignment-three.vercel.app"],
   emailAndPassword: {
     enabled: true,
+  },
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: false,
+    },
+    defaultCookieAttributes: {
+      sameSite: "none",
+      secure: true,
+      path: "/",
+    },
   },
   socialProviders: {
     github: {

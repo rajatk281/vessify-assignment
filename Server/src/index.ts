@@ -11,8 +11,9 @@ app.use(
   "/*",
   cors({
     origin: ["http://localhost:3001", "http://localhost:5173", "https://vessify-assignment-ev1s.onrender.com", "https://vessify-assignment-three.vercel.app"],
-    allowHeaders: ["Content-Type", "Authorization"],
+    allowHeaders: ["Content-Type", "Authorization", "Cookie"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    exposeHeaders: ["Set-Cookie"],
     credentials: true,
   })
 );
