@@ -28,7 +28,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      await signIn.email(
+      const result = await signIn.email(
         {
           email,
           password,
@@ -41,10 +41,14 @@ export default function LoginPage() {
           },
           onError: (ctx) => {
             toast.error(ctx.error.message || "Invalid email or password");
-            setIsLoading(false);
           },
         }
       );
+
+      // If signIn returned an error (no redirect happened), reset loading
+      if (result?.error) {
+        setIsLoading(false);
+      }
     } catch {
       toast.error("Something went wrong. Please try again.");
       setIsLoading(false);
